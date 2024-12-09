@@ -1,0 +1,116 @@
+.body-adminFilm{
+    font-family: 'Poppins', sans-serif;
+    background-color: black;
+    padding-top: 30px;
+}
+
+.navbar{
+    background-color: black !important;
+    font-size: 20px;
+}
+
+h4 {
+    color: white;
+    margin-top: 50px;
+    margin-left: 40px;
+    font-size: 30px;
+}
+
+.nav-link{
+    color: white;
+    font-weight: 500;
+    position: relative;
+}
+
+.nav-link:hover,.nav-link.active{
+    color: white;
+    font-weight: 700;
+}
+
+.nav-link::before{
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 5px;
+    background-color: orange;
+    border-radius: 16px;
+    visibility: hidden;
+    transition: 0.3s ease-in-out;
+}
+
+.nav-link:hover::before, .nav-link.active::before{
+    width: 100%;
+    visibility: visible;
+}
+
+img{
+    object-fit: cover;
+}
+
+.fa-brands{
+    font-size: 35px;
+    color: white;
+}
+
+h6{
+    padding-top: 10px;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+.container {
+    margin-top: 70px;
+    padding-top: 30px;
+    max-width: 100%; 
+}
+
+img {
+    border-radius: 16px;
+    width: 300px; 
+    height: auto; 
+}
+
+.text-center.judul{
+    color: orange;
+}
+
+.text-center.body{
+    color: white;
+}
+
+.text-center.body.sinopsis {
+    font-size: 13px;
+}
+
+.card-adminFilm {
+    border-radius: 16px;
+    padding: 20px;
+    background-color: orange;
+}
+
+.table {
+    width: 100%;
+    margin: 0;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.table thead {
+    border-radius: 16px 16px 0 0;
+    overflow: hidden;
+}
+
+.table tbody {
+    border-radius: 0 0 16px 16px;
+    overflow: hidden;
+}
+
+.table td, .table th {
+    text-align: center;
+    vertical-align: middle;
+}

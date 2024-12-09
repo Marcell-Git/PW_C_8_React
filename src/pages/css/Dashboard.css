@@ -1,0 +1,146 @@
+.body-dashboard{
+    font-family: 'Poppins', sans-serif;
+    background-color: black;
+    padding-top: 80px;
+}
+
+.navbar{
+    background-color: black;
+    font-size: 20px;
+}
+
+h4 {
+    color: white;
+    margin-top: 50px;
+    margin-left: 30px;
+    font-size: 30px;
+}
+
+.bg-body-tertiary {
+    background-color: black !important; /* atau warna lain */
+}
+
+
+.nav-link{
+    color: white;
+    font-weight: 500;
+    position: relative;
+}
+
+.nav-link:hover,.nav-link.active{
+    color: white;
+    font-weight: 700;
+}
+
+.nav-link::before{
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 5px;
+    background-color: orange;
+    border-radius: 16px;
+    visibility: hidden;
+    transition: 0.3s ease-in-out;
+}
+
+.nav-link:hover::before, .nav-link.active::before{
+    width: 100%;
+    visibility: visible;
+}
+
+.card-dashboard{
+    min-width: fit-content;
+    min-height: fit-content;
+    background-color: transparent;
+    transition: transform 0.3s;
+}
+
+.card-dashboard:hover{
+    transform: scale(1.03);
+}
+
+.img-dashboard{
+    object-fit: cover;
+    width: 100%;
+    height: auto;
+}
+
+.card-title-dashboard{
+    color: white;
+}
+
+.card-body{
+    padding-left: 0;
+    padding-right: 0;
+}    
+
+.fa-brands{
+    font-size: 35px;
+    color: white;
+}
+
+.btn-dashboard {
+    border: none;
+    outline: none;
+    padding: 0; 
+    margin: 0;
+    background-color: transparent; 
+}
+
+h6{
+    padding-top: 10px;
+    padding-right: 30px;
+}
+
+.modal-content{
+    background-color: #212121; 
+}
+
+@media (max-width: 768px) {
+    .navbar {
+        font-size: 14px;
+    }
+
+    .card img {
+        height: auto;
+    }
+
+    h4 {
+        font-size: 20px;
+        margin-left: 20px;
+    }
+
+    .carousel-inner img {
+        height: 300px;
+    }
+
+    .col-9 h3 {
+        font-size: 24px;
+    }
+
+    .col-sm-9 h5 {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 576px) {
+    .navbar {
+        font-size: 12px;
+    }
+
+    .carousel-inner img {
+        height: 200px; 
+    }
+
+    .col-sm-9 h5 {
+        font-size: 14px;
+    }
+
+    h4 {
+        font-size: 18px;
+        margin-left: 10px;
+    }
+}

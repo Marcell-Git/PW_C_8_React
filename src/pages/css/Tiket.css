@@ -1,0 +1,234 @@
+.seat-color {
+    width: 15px;
+    height: 15px;
+    background-color: #28a745;
+    display: inline-block;
+    margin-right: 10px;
+}
+.seat-item.available .seat-color {
+    background-color: #28a745;
+}
+.seat-item.not-available .seat-color {
+    background-color: #dc3545;
+}
+.seat-item.selected .seat-color {
+    background-color: #ffc107;
+}
+.dropdown-seat-item {
+    display: flex;
+    flex-wrap: wrap;
+}
+.body-tiket {
+    font-family: 'Poppins', sans-serif;
+    background-color: black;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: black;
+    overflow-x: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 0px;
+}
+.navbar {
+    background-color: black !important;
+    font-size: 20px;
+}
+h4 {
+    color: white;
+    margin-top: 50px;
+    margin-left: 40px;
+    font-size: 30px;
+}
+.nav-link {
+    color: white;
+    font-weight: 500;
+    position: relative;
+}
+.nav-link:hover, .nav-link.active {
+    color: white;
+    font-weight: 700;
+}
+.nav-link::before{
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 5px;
+    background-color: orange;
+    border-radius: 16px;
+    visibility: hidden;
+    transition: 0.3s ease-in-out;
+}
+.nav-link:hover::before, .nav-link.active::before{
+    width: 100%;
+    visibility: visible;
+}
+.card-tiket {
+    max-width: fit-content;
+    max-height: fit-content;
+    background-color: transparent;
+    transition: transform 0.3s;
+}
+.card-tiket:hover {
+    transform: scale(1.03);
+}
+.img-tiket {
+    object-fit: cover;
+}
+.card-title {
+    color: white;
+}
+.card-body {
+    padding-left: 0;
+    padding-right: 0;
+}
+.fa-brands {
+    font-size: 35px;
+    color: white;
+}
+
+h6 {
+    padding-top: 10px;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+.container-tiket {
+    background-color: #1f1f1f;
+    padding: 30px;
+    border-radius: 15px;
+    margin-top: 120px;
+    margin-bottom: 50px;
+    max-width: 600px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+    
+}
+.form-group label {
+    color: white;
+    font-weight: 500;
+    width: 1000px;
+}
+.custom-select {
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 15px;
+}
+.btn-pesan {
+    background-color: orange;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    transition: background-color 0.3s ease;
+    display: block;
+    width: 100%;
+    font-weight: 600;
+}
+.btn-group {
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    transition: background-color 0.3s ease;
+    display: block;
+    width: 100%;
+    font-weight: 600;
+}
+.btn-pesan:hover {
+    background-color: #ff6600;
+}
+h2 {
+    color: white;
+    margin-bottom: 20px;
+    font-weight: 600;
+    text-align: center;
+}
+.btn-dropdown {
+    background-color: white;
+    color: black;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+    width: 100%;
+    text-align: left;
+    padding-left: 20px;
+    position: relative;
+    display: flex;
+}
+.btn-dropdown:hover {
+    background-color: #ff6600;
+    color: white;
+    display: flex;
+}
+.dropdown-menu {
+    background-color: #333;
+    border: none;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+    border-radius: 10px;
+}
+.dropdown-item {
+    color: white;
+    background-color: transparent;
+    transition: background-color 0.3s ease;
+    display: flex;
+    align-items: center;
+}
+.dropdown-item:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+.dropdown-item img {
+    width: 150px;
+    height: auto;
+    margin-right: 10px;
+    border-radius: 5px;
+}
+.dropdown-item span {
+    font-size: 16px;
+    font-weight: 500;
+}
+.dropdown-toggle::after {
+    content: '\f107';
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+.form-group .btn-group {
+    margin-top: 15px;
+}
+@media (max-width: 576px) {
+    .dropdown-item img {
+        width: 60px;
+    }
+    .dropdown-item span {
+        font-size: 14px;
+    }
+}
+.dropdown-seat-item {
+    display: flex;
+    flex-wrap: wrap;
+}
+.seat-item {
+    width: 40px;
+    margin: 5px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.modal-content{
+    background-color: #212121; 
+}
+.text-modal{
+    font-size: 15px;
+}

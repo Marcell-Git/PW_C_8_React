@@ -1,0 +1,89 @@
+.body-camilan {
+    font-family: 'Poppins', sans-serif;
+    padding-top: 100px;
+    padding-left: 5%;
+    padding-right: 5%;
+}
+
+.navbar{
+    background-color: black !important;
+    font-size: 20px;
+}
+
+.nav-link{
+    color: white;
+    font-weight: 500;
+    position: relative;
+}
+
+.nav-link:hover,.nav-link.active{
+    color: white;
+    font-weight: 700;
+}
+
+.nav-link::before{
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 5px;
+    background-color: orange;
+    border-radius: 16px;
+    visibility: hidden;
+    transition: 0.3s ease-in-out;
+}
+
+.nav-link:hover::before, .nav-link.active::before{
+    width: 100%;
+    visibility: visible;
+}
+
+.background-animation {
+    background-color: black;
+    background-size: cover;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+.form-floating .form-control::placeholder {
+    color: #000000;
+    opacity: 1;
+}
+
+.item { margin: 10px; }
+.text-custom {
+    font-size: 12px;
+}
+.container-camilan{
+    position: relative;
+    z-index: 1;
+}
+.btn-custom{
+    background-color: silver;
+    width: 70px;
+}
+.btn-custom:hover{
+    background-color: #BB4A00;
+}
+
+.btn.btn-nav{
+    background-color: #BB4A00;
+    color: black;
+    font-size: 17px;
+}
+
+.modal-content-camilan{
+    background-color: #212121; 
+}
+
+.text-modal-camilan{
+    font-size: 15px;
+    padding-top: 20px;
+    color: white;
+}

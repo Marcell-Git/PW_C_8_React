@@ -1,0 +1,84 @@
+.body-profil{
+    font-family: 'Poppins', sans-serif;
+    background-color: black;
+    padding-top: 80px;
+}
+
+.navbar{
+    background-color: black !important;
+    font-size: 20px;
+}
+
+h4 {
+    color: white;
+}
+
+.nav-link{
+    color: white;
+    font-weight: 500;
+    position: relative;
+}
+
+.nav-link:hover,.nav-link.active{
+    color: white;
+    font-weight: 700;
+}
+
+.nav-link::before{
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 5px;
+    background-color: orange;
+    border-radius: 16px;
+    visibility: hidden;
+    transition: 0.3s ease-in-out;
+}
+
+.nav-link:hover::before, .nav-link.active::before{
+    width: 100%;
+    visibility: visible;
+}
+
+p{
+    color: white;
+}
+
+.form-control{
+    height: 50px;
+}
+
+label{
+    color: white;
+}
+
+.btn{
+    transition: transform 0.3s;
+}
+
+.btn:hover{
+    transform: scale(1.03);
+}
+
+.btn i.fa-ticket:hover {
+    color: #345AFF;
+}
+
+.text-modal{
+    font-size: 15px;
+}
+
+.barcode{
+    background-color: white; 
+    border-radius: 12px;
+    width: fit-content;
+}
+
+.barcode-camilan{
+    background-color: white; 
+    border-radius: 12px;
+    width: fit-content;
+}
