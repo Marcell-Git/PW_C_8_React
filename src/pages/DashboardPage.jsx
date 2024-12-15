@@ -1,6 +1,10 @@
 import './css/Dashboard.css';
 import React, { useState } from 'react';
 
+import { useEffect } from 'react';
+import { getFilm } from '../api/apiFilm';
+import { getPoster } from '../api/index';
+
 import ImageCarousel from '../components/CarouselImage';
 import TopNavBar from '../components/TopNavbar';
 
@@ -21,6 +25,7 @@ import promo2 from '../assets/images/event2.png';
 import promo3 from '../assets/images/event3.png';
 
 import DetailFilmModal from '../components/Modals/DetailFilmModal';
+import { use } from 'react';
 
 const sedangTayang = [
     {
@@ -74,6 +79,21 @@ const promo = [
 
 const DashboardPage = () => {
     const [selectedFilm, setSelectedFilm] = useState(null);
+    const [film, setFilm] = useState([]);
+
+    useEffect(() => {
+        const fetchFilm = async () => {
+            try {
+                const data = await getFilm();
+                console.log(data);
+                setFilm(data);
+            } catch (error) {
+                console.error("Error fetching film:", error);
+            }
+        };
+
+        fetchFilm();
+    }, []);
 
     const handleFilmSelect = (film) => {
         setSelectedFilm(film);
@@ -93,16 +113,16 @@ const DashboardPage = () => {
             
             <div className="d-flex align-items-center justify-content-center p-5">
                 <div className="row row-cols-1 row-cols-md-4 g-5 d-flex">
-                    {sedangTayang.map((film, index) => (
-                        <div className="col" key={index}>
+                    {film?.filter((film) => film.status === "Sedang Tayang").map((film) => (
+                        <div className="col" key={film.id_film}>
                             <div className="card card-dashboard">
                                 <button type="button" className="btn" data-bs-toggle="modal" data-bs-target="#detailFilm" onClick={() => handleFilmSelect(film)}>
-                                    <img src={film.img} className="card-img-top rounded img-fluid img-dashboard" style={{ width: "350px", height: "564px" }} />
+                                    <img src={getPoster(film.poster)} className="card-img-top rounded img-fluid img-dashboard" style={{ width: "350px", height: "564px" }} />
                                 </button>
                                 <div className="card-body">
                                     <div className="row">
                                         <div className="col-sm-9">
-                                            <h5 className="card-title card-title-dashboard">{film.title}</h5>
+                                            <h5 className="card-title card-title-dashboard">{film.judul}</h5>
                                         </div>
                                         <div className="col-sm-3">
                                             <div className="d-flex align-items-center justify-content-end">
@@ -121,16 +141,16 @@ const DashboardPage = () => {
 
             <div className="d-flex align-items-center justify-content-center p-5">
                 <div className="row row-cols-1 row-cols-md-4 g-5 d-flex">
-                    {Mendatang.map((film, index) => (
-                        <div className="col" key={index}>
+                    {film?.filter((film) => film.status === "Mendatang").map((film) => (
+                        <div className="col" key={film.id_film}>
                             <div className="card card-dashboard">
                                 <button type="button" className="btn" data-bs-toggle="modal" data-bs-target="#detailFilm" onClick={() => handleFilmSelect(film)}>
-                                    <img src={film.img} className="card-img-top rounded img-fluid img-dashboard" style={{ width: "350px", height: "564px" }} />
+                                    <img src={getPoster(film.poster)} className="card-img-top rounded img-fluid img-dashboard" style={{ width: "350px", height: "564px" }} />
                                 </button>
                                 <div className="card-body">
                                     <div className="row">
                                         <div className="col-sm-9">
-                                            <h5 className="card-title card-title-dashboard">{film.title}</h5>
+                                            <h5 className="card-title card-title-dashboard">{film.judul}</h5>
                                         </div>
                                         <div className="col-sm-3">
                                             <div className="d-flex align-items-center justify-content-end">
