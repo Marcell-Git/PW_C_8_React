@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { toast } from 'react-toastify'; // Import toast for notifications
-import { updateFilm } from '../../api/apiFilm'; // Adjust the path accordingly
+import { toast } from 'react-toastify'; 
+import { updateFilm, deleteFilm } from '../../api/apiFilm';
 
 const EditFilmModal = ({ toggleModalEditFilm, film, onEditFilm }) => {
     const [formData, setFormData] = useState({
@@ -10,8 +10,8 @@ const EditFilmModal = ({ toggleModalEditFilm, film, onEditFilm }) => {
         rating: '',
         pemeran: '',
         sinopsis: '',
-        status: 'Sedang Tayang', // Default status
-        review: '', // Assuming you have a review field
+        status: 'Sedang Tayang',
+        review: '', 
     });
 
     useEffect(() => {
@@ -24,7 +24,7 @@ const EditFilmModal = ({ toggleModalEditFilm, film, onEditFilm }) => {
                 pemeran: film.pemeran,
                 sinopsis: film.sinopsis,
                 status: film.status,
-                review: film.review || '', // Assuming you have a review field
+                review: film.review || '', 
             });
         }
     }, [film]);
@@ -42,7 +42,7 @@ const EditFilmModal = ({ toggleModalEditFilm, film, onEditFilm }) => {
         event.preventDefault();
         const { judul, tanggal_tayang, rating, pemeran, sinopsis, status, review } = formData;
     
-        // Validate form data
+        // Validasi data formulir
         if (!judul || !tanggal_tayang || !rating || !pemeran || !sinopsis || review === '') {
             toast.error("Semua field harus diisi!");
             return;
@@ -58,18 +58,29 @@ const EditFilmModal = ({ toggleModalEditFilm, film, onEditFilm }) => {
             review,
         };
     
-        console.log("Update Data:", updateData); // Log the data being sent
-    
+        console.log("Update Data:", updateData); 
         try {
-            await updateFilm(updateData); // Call the updateFilm function
-            toast.success("Film berhasil diperbarui!"); // Show success message
-            toggleModalEditFilm(); // Close the edit film modal
+            await onEditFilm(updateData);
+            toast.success("Film berhasil diperbarui!"); 
+            toggleModalEditFilm(); 
         } catch (error) {
             console.error("Error updating film:", error);
-            toast.error("Gagal memperbarui film. Coba lagi!"); // Show error message
+            toast.error("Gagal memperbarui film. Coba lagi!");
         }
     };
 
+    const HandlerDelete = async () => {
+        try {
+            await deleteFilm(film.id_film);
+            toast.success("Film berhasil dihapus!");
+            toggleModalEditFilm();
+            window.location.reload();
+        } catch (error) {
+            console.error("Error deleting film:", error);
+            toast.error("Gagal menghapus film. Coba lagi!");
+        }
+    };
+    
     return (
         <div className="modal fade show" style={{ display: 'block' }} tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div className="modal-dialog modal-dark modal-dialog-centered modal-m">
@@ -108,22 +119,26 @@ const EditFilmModal = ({ toggleModalEditFilm, film, onEditFilm }) => {
                                 <label className="form-label" style={{ color: "white" }}>Status</label>
                                 <select className="form-select" name="status" value={formData.status} onChange={handleChange} required>
                                     <option value="Sedang Tayang">Sedang Tayang</option>
-                                    <option value="Selesai Tayang">Selesai Tayang</option>
-                                    <option value="Segera Tayang">Segera Tayang</option>
+                                    <option value="Mendatang">Mendatang</option>
                                 </select>
                             </div>
                             <div className="mb-3">
-                                <label className="form-label" style={{ color: "white" }}>Review (Integer)</label>
+                                <label className="form-label" style={{ color: "white" }}>Review</label>
                                 <input type="number" className="form-control" name="review" value={formData.review} onChange={handleChange} required />
                             </div>
                             <div className="row pt-3">
                                 <div className="col-2">
                                     <button type="button" className="btn btn-danger" onClick={toggleModalEditFilm}>Batal</button>
                                 </div>
-                                <div className="col-10">
+                                <div className="col-6">
                                     <button type="submit" className="btn btn-success">Simpan</button>
                                 </div>
+                                <div className='col-4'>
+                                    <button type="button" className="btn btn-danger" onClick={HandlerDelete}>Hapus Film</button>
+                                </div>
                             </div>
+
+                            
                         </form>
                     </div>
                 </div>
@@ -132,4 +147,4 @@ const EditFilmModal = ({ toggleModalEditFilm, film, onEditFilm }) => {
     );
 };
 
-export default EditFilmModal;
+export default EditFilmModal;
