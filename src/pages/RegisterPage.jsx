@@ -13,7 +13,7 @@ const FormRegister = () => {
   const [loading, setLoading] = useState(false); // Loading status
   const [data, setData] = useState({
     email: "",
-    name: "", // Change from username to name
+    name: "", 
     password: "",
     confirmPassword: "",
   });

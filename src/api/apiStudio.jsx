@@ -1,8 +1,6 @@
-import useAxios from '.'; // Adjust the path as necessary
+import useAxios from ".";
 
-// Function to book a ticket
-
-export const pesanTiket = async ()=> {
+export const getStudio = async ()=> {
     const token = sessionStorage.getItem("token");
     console.log("Token:", token);
 
@@ -11,7 +9,7 @@ export const pesanTiket = async ()=> {
     }
 
     try {
-        const response = await useAxios.post("/tiket", {
+        const response = await useAxios.get("/studio", {
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
