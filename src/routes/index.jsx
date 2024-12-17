@@ -9,6 +9,8 @@ import PesanTiketPage from "../pages/PesanTiketPage";
 import PesanCamilanPage from "../pages/PesanCamilanPage";
 import ProfilPage from "../pages/ProfilPage";
 import AdminFilmPage from "../pages/AdminFilmPage";
+import OrderCamilanPage from "../pages/OrderCamilanPage";
+
 
 
 const router = createBrowserRouter([
@@ -35,6 +37,10 @@ const router = createBrowserRouter([
     {
         path: "/camilan",
         element: <PesanCamilanPage />,
+    },
+    {
+        path: "/pesanCamilan",
+        element: <OrderCamilanPage />,
     },
     {
         path: "/profil",
