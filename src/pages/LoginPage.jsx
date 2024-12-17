@@ -8,7 +8,7 @@ import imgLogo from "../assets/images/logo.png";
 import { SignIn } from "../api/apiAuth";  // Import SignIn API function
 
 const LoginPage = () => {
-    const [formData, setFormData] = useState({ email: "", password: "" }); // Menggunakan email
+    const [formData, setFormData] = useState({ email: "", password: "" });
     const [errors, setErrors] = useState({});
     const [loading, setLoading] = useState(false);
 
@@ -39,14 +39,22 @@ const LoginPage = () => {
         SignIn({ email, password })
             .then((res) => {
                 // On success, save the token and user info to sessionStorage
-                sessionStorage.setItem("token", res.token); // Sesuaikan dengan nama variabel token dari backend
+                sessionStorage.setItem("token", res.token); // Adjust according to your backend token
                 sessionStorage.setItem("user", JSON.stringify(res.detail));
-                sessionStorage.setItem("userProfile", res.detail.id); // Simpan detail user
-                toast.success("Login berhasil!");
-                setTimeout(() => {
-                    // Navigate to the appropriate page
-                    window.location.href = "/home"; 
-                }, 2000);
+                sessionStorage.setItem("userProfile", res.detail.id); // Save user details
+
+                // Check if the user is an admin
+                if (res.detail.name === "admin") {
+                    toast.success("Login berhasil sebagai Admin!");
+                    setTimeout(() => {
+                        window.location.href = "/admin/user"; // Redirect to admin user page
+                    }, 2000);
+                } else {
+                    toast.success("Login berhasil!");
+                    setTimeout(() => {
+                        window.location.href = "/home"; // Redirect to home page
+                    }, 2000);
+                }
             })
             .catch((err) => {
                 // Handle errors (e.g., incorrect email/password)
@@ -98,7 +106,7 @@ const LoginPage = () => {
 
                                     <div className="form-floating mb-2 mt-3">
                                         <input
-                                            type="email" // Ubah tipe input menjadi email
+                                            type="email"
                                             className={`form-control text-black ${errors.email ? "is-invalid" : ""}`}
                                             id="email"
                                             name="email"
@@ -136,7 +144,7 @@ const LoginPage = () => {
                                         type="submit"
                                         className="btn btn-danger btn-block mb-2 mt-3 bg-orange"
                                         style={{ color: "black", width: "100%", height: "50px", fontSize: "20px" }}
-                                        disabled={loading} // Disable button when loading
+                                        disabled={loading}
                                     >
                                         <strong>{loading ? "Memuat..." : "Masuk"}</strong>
                                     </button>

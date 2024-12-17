@@ -1,6 +1,8 @@
 import './css/Tiket.css';
 import { useState, useEffect } from 'react';
 import TopNavBar from '../components/TopNavbar';
+import { getFilm } from '../api/apiFilm';
+import { getStudio } from '../api/apiStudio';
 import { pesanTiket } from '../api/apiPesanTiket';
 import { getFilm } from '../api/apiFilm';
 import { getPoster } from '../api/index';
@@ -12,6 +14,7 @@ import PembayaranFilmModal from './PembayaranFilmPage';
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
 
 const PesanTiketPage = () => {
     const navigate = useNavigate();
@@ -64,7 +67,7 @@ const PesanTiketPage = () => {
             tempat_duduk: selectedSeat,
             harga: 50000 // Example price, adjust as needed
         };
-
+      
         try {
             const response = await pesanTiket(bookingData);
             console.log("Order snack successful:", response);
@@ -75,8 +78,7 @@ const PesanTiketPage = () => {
                     }
                 });
         } catch (error) {
-            console.error("Error booking ticket:", error);
-            alert("Terjadi kesalahan saat memesan tiket. Silakan coba lagi.");
+            setError("Gagal memesan tiket. Silakan coba lagi.");
         }
     };
 
@@ -85,6 +87,8 @@ const PesanTiketPage = () => {
             <TopNavBar />
             <div className="container-tiket pb-5">
                 <h2>Pesan Tiket</h2>
+                {error && <div className="alert alert-danger">{error}</div>}
+                {success && <div className="alert alert-success">{success}</div>}
                 <form>
                     <div className="btn-group">
                         <label htmlFor="tanggal">Pilih Tanggal:</label>
@@ -96,7 +100,6 @@ const PesanTiketPage = () => {
                             onChange={(e) => setSelectedDate(e.target.value)}
                         />
                     </div>
-
                     <div className="form-group">
                         <div className="btn-group">
                             <button
@@ -121,7 +124,6 @@ const PesanTiketPage = () => {
                             </ul>
                         </div>
                     </div>
-
                     <div className="form-group">
                         <div className="btn-group">
                             <button
@@ -138,7 +140,7 @@ const PesanTiketPage = () => {
                                     <li
                                         key={film.id_film}
                                         className="dropdown-item"
-                                        onClick={() => setSelectedFilm(film)}
+                                        onClick={() => handleFilmSelect(film)}
                                     >
                                         <img className='img-tiket' src={getPoster(film.poster)} alt={film.judul} style={{ width: "20%" }} />
                                         <div style={{ display: "flex", flexDirection: "column" }}>
@@ -150,7 +152,6 @@ const PesanTiketPage = () => {
                             </ul>
                         </div>
                     </div>
-
                     <div className="form-group">
                         <div className="btn-group">
                             <button
@@ -167,7 +168,7 @@ const PesanTiketPage = () => {
                                     <li
                                         key={studio.id_studio}
                                         className="dropdown-item"
-                                        onClick={() => setSelectedStudio(studio)}
+                                        onClick={() => handleStudioSelect(studio)}
                                     >
                                         <img className='img-tiket' src={getGambarStudio(studio.gambar_studio)} alt={studio.nama_studio} />
                                         <div style={{ display: "flex", flexDirection: "column" }}>
@@ -179,7 +180,6 @@ const PesanTiketPage = () => {
                             </ul>
                         </div>
                     </div>
-
                     <div className="form-group">
                         <div className="btn-group">
                             <label htmlFor="seatDropdown">Pilih Tempat Duduk:</label>
@@ -192,7 +192,6 @@ const PesanTiketPage = () => {
                             />
                         </div>
                     </div>
-
                     <button
                         type="button"
                         className="btn-pesan"

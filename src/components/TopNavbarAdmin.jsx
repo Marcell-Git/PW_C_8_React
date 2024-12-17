@@ -1,24 +1,35 @@
-
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
-
 import LogOutModal from './Modals/LogOutModal';
-
 import logo from '../assets/images/Logo.png';
 
 const TopNavbarAdmin = () => {
     const [logout, setLogout] = useState(false);
+    const navigate = useNavigate();
 
     const handleLogout = () => {
-        setLogout(!logout);
+        console.log("Toggling logout modal");
+        setLogout(true); // Set logout modal to true to show it
+    }
+    
+    const confirmLogout = () => {
+        console.log("Logging out...");
+        // Clear user session or authentication state here
+        localStorage.removeItem('user'); // Adjust based on your auth logic
+        navigate('/'); // Redirect to login page
+    }
+
+    const cancelLogout = () => {
+        console.log("Logout canceled");
+        setLogout(false); // Close the logout modal
     }
 
     return (
         <nav className="navbar navbar-expand-lg bg-body-tertiary fixed-top">
-            {logout && <LogOutModal handleLogout={handleLogout}/>}
+            {logout && <LogOutModal toggleModalLogOut={cancelLogout} onConfirmLogout={confirmLogout} />}
 
             <div className="container-fluid">
-                <img src={logo} className="img-fluid" style={{ width: '150px' }} />
+                <img src={logo} className="img-fluid" style={{ width: '150px' }} alt="Logo" />
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>
@@ -27,9 +38,8 @@ const TopNavbarAdmin = () => {
                         <li className="nav-item">
                             <NavLink 
                                 style={{ color: 'white' }} 
-                                className="nav-link m-2 mr-3" 
+                                className={({ isActive }) => `nav-link m-2 mr-3 ${isActive ? 'active' : ''}`} 
                                 to="/admin/user"
-                                activeClassName="active" 
                             >
                                 User
                             </NavLink>
@@ -37,15 +47,14 @@ const TopNavbarAdmin = () => {
                         <li className="nav-item">
                             <NavLink 
                                 style={{ color: 'white' }} 
-                                className="nav-link m-2" 
+                                className={({ isActive }) => `nav-link m-2 ${isActive ? 'active' : ''}`} 
                                 to="/admin/film"
-                                activeClassName="active" 
                             >
                                 Film
                             </NavLink>
                         </li>
                         <li className="nav-item">
-                            <button style={{ color: 'white' }} className="nav-link m-2" aria-current="page" data-bs-toggle="modal" data-bs-target="#keluar" onClick={handleLogout}>
+                            <button style={{ color: 'white' }} className="nav-link m-2" aria-current="page" onClick={handleLogout}>
                                 Logout <i className="fa-solid fa-user"></i>
                             </button>
                         </li>

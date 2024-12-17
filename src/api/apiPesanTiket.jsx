@@ -1,19 +1,21 @@
-import useAxios from '.';
+import useAxios from '.'; // Adjust the path as necessary
 
 // Function to book a ticket
-export const pesanTiket = async (bookingData) => {
+
+export const pesanTiket = async ()=> {
     const token = sessionStorage.getItem("token");
-    
+
     try {
-        const response = await useAxios.post('/tiket', bookingData, {
+        const response = await useAxios.post("/tiket", {
             headers: {
-                "Content-Type": "application/json", // Ensure the content type is set correctly
+                "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
             },
         });
-        return response.data; // Return the response data
+        return response.data.data;
     } catch (error) {
-        throw error.response.data; // Throw the error response for handling in the component
+        console.error("Error fetching studio:", error);
+        throw error.response ? error.response.data : error;
     }
 };
 
@@ -30,4 +32,4 @@ export const getNewestTiket = async () => {
     } catch (error) {
         throw error.response.data;
     }
-}
+};

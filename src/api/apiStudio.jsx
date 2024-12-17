@@ -1,6 +1,6 @@
 import useAxios from ".";
 
-export const getStudio = async () => {
+export const getStudio = async ()=> {
     const token = sessionStorage.getItem("token");
 
     if (!token) {
