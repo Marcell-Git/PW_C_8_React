@@ -40,7 +40,8 @@ const LoginPage = () => {
             .then((res) => {
                 // On success, save the token and user info to sessionStorage
                 sessionStorage.setItem("token", res.token); // Sesuaikan dengan nama variabel token dari backend
-                sessionStorage.setItem("user", JSON.stringify(res.detail)); // Simpan detail user
+                sessionStorage.setItem("user", JSON.stringify(res.detail));
+                sessionStorage.setItem("userProfile", res.detail.id); // Simpan detail user
                 toast.success("Login berhasil!");
                 setTimeout(() => {
                     // Navigate to the appropriate page

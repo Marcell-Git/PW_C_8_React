@@ -31,4 +31,8 @@ const SignIn = async (data) => {
   }
 };
 
-export { SignUp, SignIn };
+const Signout = () => {
+  sessionStorage.removeItem("token");
+}
+
+export { SignUp, SignIn, Signout };
