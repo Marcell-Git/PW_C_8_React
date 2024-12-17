@@ -29,7 +29,6 @@ const DashboardPage = () => {
         const fetchFilm = async () => {
             try {
                 const data = await getFilm();
-                console.log(data);
                 setFilm(data);
             } catch (error) {
                 console.error("Error fetching film:", error);

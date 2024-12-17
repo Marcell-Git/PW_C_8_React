@@ -4,10 +4,14 @@ import { getUserProfile, UpdateProfile, updateProfilePicture, getProfilePictureP
 import { Signout } from "../api/apiAuth"; // Import the Signout function
 import TopNavBar from "../components/TopNavbar";
 import './css/Profil.css';
+
+import { getPembayaranCamilanByUser } from "../api/apiPembayaranCamilan";
 import LogOutModal from "../components/Modals/LogOutModal";
 import DetailRiwayatTiketModal from "../components/Modals/DetailRiwayatTiketModal";
 import DetailRiwayatCamilanModal from "../components/Modals/DetailRiwayatCamilanModal";
 import poster1 from '../assets/images/poster1.webp';
+import CamilanCard from "../components/CamilanCard";
+import FilmCard from "../components/FilmCard";
 
 const ProfilPage = () => {
     const navigate = useNavigate(); // Initialize useNavigate
@@ -19,6 +23,8 @@ const ProfilPage = () => {
     const [isEditing, setIsEditing] = useState(false); // State to toggle edit mode
     const [formValues, setFormValues] = useState({ name: '', email: '', password: '' }); // State for form values
     const [profilePicture, setProfilePicture] = useState(null); // State for profile picture file
+    const [dataCamilan, setDataCamilan] = useState([]);
+    
 
     const toggleModalLogOut = () => {
         setIsModalLogOutOpen(!isModalLogOutOpen);
@@ -31,15 +37,16 @@ const ProfilPage = () => {
     const toggleModalDetailRiwayatCamilan = () => {
         setIsModalDetailRiwayatCamilanOpen(!isModalDetailRiwayatCamilanOpen);
     }
+    
 
     useEffect(() => {
         const userId = sessionStorage.getItem('userProfile');
         if (userId) {
             getUserProfile()
                 .then(data => {
-                    console.log("User Profile Data:", data); // Log data untuk debugging
+                    console.log("User Profile Data:", data);
                     setUserData(data);
-                    setFormValues({ name: data.name, email: data.email, password: '' , profilePicture: data.profile_picture}); // Initialize form values
+                    setFormValues({ name: data.name, email: data.email, password: '' , profilePicture: data.profile_picture});
                 })
                 .catch(err => {
                     setError(err.message);
@@ -49,6 +56,17 @@ const ProfilPage = () => {
             setError("User ID not found in session storage.");
             console.error("User ID not found in session storage.");
         }
+
+        const fetchDataCamilan = async () => {
+            try {
+                const data = await getPembayaranCamilanByUser();
+                setDataCamilan(data);
+            } catch (error) {
+                console.error("Error fetching snack:", error);
+            }
+        };
+        
+        fetchDataCamilan();
     }, []);
 
     const handleInputChange = (e) => {
@@ -109,6 +127,7 @@ const ProfilPage = () => {
     };
     
     return (
+        
         <div className="body-profil">
             <TopNavBar />
             {isModalLogOutOpen && (
@@ -120,8 +139,8 @@ const ProfilPage = () => {
             {isModalDetailRiwayatTiketOpen && <DetailRiwayatTiketModal toggleModalDetailRiwayatTiket={toggleModalDetailRiwayatTiket} />}
             {isModalDetailRiwayatCamilanOpen && <DetailRiwayatCamilanModal toggleModalDetailRiwayatCamilan={toggleModalDetailRiwayatCamilan} />}
 
-            <div className="container mt-3 mb-5">
-                <div className="row">
+            <div className="container-profil mb-5">
+                <div className="row p-5">
                     <div className="col-md-6">
                         <h4>Info Akun</h4>
                         <div className="row pt-3">
@@ -196,64 +215,11 @@ const ProfilPage = () => {
 
                     <div className="col-md-6">
                         <h4 className="text-end pb-3">Pesanan Saya</h4>
-                        <div className="d-flex align-items-center justify-content-end">
-                            <div className="card card-profil mb-3" style={{ width: "100%", backgroundColor: "transparent", borderBottom: "3px solid white" }}>
-                                <div className="row g-0 p-3">
-                                    <div className="col-md-3 d-flex align-items-center justify-content-start">
-                                        <img src={poster1} className="img-fluid" style={{ width: "101px", height: "151px", borderRadius: "16px" }} />
-                                    </div>
-                                    <div className="col-md-9">
-                                        <div className="card-body">
-                                            <div className="row">
-                                                <div className="col-md-7">
-                                                    <h5 className="card-title" style={{ color: "#FF6500" }}>Home Sweet Loan</h5>
-                                                </div>
-                                                <div className="col-md-5 text-end">
-                                                    <p>27 September 2024</p>
-                                                </div>
-                                            </div>
-                                            <div className="row">
-                                                <div className="col-md-10">
-                                                    <p className="card-text">H18 - REGULAR</p>
-                                                    <p style={{ color: "red" }} className="card-text pt-4">Rp. 43.000</p>
-                                                </div>
-                                                <div className="col-md-2 text-end">
-                                                    <button style={{ fontSize: "30px", color: "white" }} type="button" className="btn" data-bs-toggle="modal" data-bs-target="#detailRiwayatTiket" onClick={toggleModalDetailRiwayatTiket}><i className="fa-solid fa-ticket" style={{ fontSize: "30px" }}></i></button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
 
-                        <div className="d-flex align-items-center justify-content-end">
-                            <div className="card mb-3" style={{ width: "100%", backgroundColor: "transparent", borderBottom: "3px solid white" }}>
-                                <div className="row g-0 p-3">
-                                    <div className="col-md-10 w-100">
-                                        <div className="card-body p-0">
-                                            <div className="row">
-                                                <div className="col-md-7">
-                                                    <h5 className="card-title" style={{ color: "#FF6500" }}>Camilan</h5>
-                                                </div>
-                                                <div className="col-md-5 text-end">
-                                                    <p>27 September 2024</p>
-                                                </div>
-                                            </div>
-                                            <div className="row">
-                                                <div className="col-md-10">
-                                                    <p className="card-text">Hemat 1, Popcorn, Kenyang aja</p>
-                                                    <p style={{ color: "red" }} className="card-text pt-4">Rp. 255.000</p>
-                                                </div>
-                                                <div className="col-md-2 text-end">
-                                                    <button style={{ fontSize: "30px", color: "white" }} type="button" className="btn" data-bs-toggle="modal" data-bs-target="#detailRiwayatCamilan" onClick={toggleModalDetailRiwayatCamilan}><i className="fa-solid fa-utensils" style={{ fontSize: "30px" }}></i></button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <FilmCard/>
+
+                        <CamilanCard/>
+                        
                     </div>
                 </div>
             </div>

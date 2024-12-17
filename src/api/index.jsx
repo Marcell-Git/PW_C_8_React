@@ -17,4 +17,8 @@ export const getGambarSnack = (gambar) => {
     return `${BASE_URL}/storage/Snack-picture/${gambar}`;
 }
 
+export const getGambarStudio = (gambar) => {
+    return `${BASE_URL}/storage/gambar-studio/${gambar}`;
+}
+
 export default useAxios;

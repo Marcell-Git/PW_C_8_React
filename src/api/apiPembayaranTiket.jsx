@@ -1,6 +1,6 @@
 import useAxios from ".";
 
-export const postPembayaranCamilan = async (data) => {
+export const postPembayaranTiket = async (data) => {
     const token = sessionStorage.getItem("token");
     
     if (!token) {
@@ -8,7 +8,7 @@ export const postPembayaranCamilan = async (data) => {
     }
 
     try {
-        const response = await useAxios.post("/pembayaranCamilan", data, {
+        const response = await useAxios.post("/pembayaranTiket", data, {
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
@@ -16,12 +16,12 @@ export const postPembayaranCamilan = async (data) => {
         });
         return response.data;
     } catch (error) {
-        console.error("Error posting snack:", error);
+        console.error("Error posting ticket:", error);
         throw error.response ? error.response.data : error;
     }
 }
 
-export const getPembayaranCamilanByUser = async () => {
+export const getPembayaranTiketByUser = async () => {
     const token = sessionStorage.getItem("token");
 
     if (!token) {
@@ -29,14 +29,14 @@ export const getPembayaranCamilanByUser = async () => {
     }
 
     try {
-        const response = await useAxios.get("/showCamilanByUser", {
+        const response = await useAxios.get("/showTiketByUser", {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
         });
         return response.data.data;
     } catch (error) {
-        console.error("Error fetching snack:", error);
+        console.error("Error fetching ticket:", error);
         throw error.response ? error.response.data : error;
     }
 }
