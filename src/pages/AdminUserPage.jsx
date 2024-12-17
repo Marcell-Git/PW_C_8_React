@@ -1,5 +1,6 @@
 import '../pages/css/AdminUser.css';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { getUserAllProfile } from '../api/apiContent';
 
 import EditUserModal from '../components/Modals/EditUserModal';
 import TambahUserModal from '../components/Modals/TambahUserModal';
@@ -9,6 +10,9 @@ import TopNavbarAdmin from '../components/TopNavbarAdmin';
 const AdminUserPage = () => {
     const [isModalEditOpen, setIsModalEditOpen] = useState(false);
     const [isModalTambahOpen, setIsModalTambahOpen] = useState(false);
+    const [users, setUsers] = useState([]);
+    const [selectedUser, setSelectedUser] = useState(null); // State to hold the selected user for editing
+    const [error, setError] = useState(null); // State to hold error messages
 
     const toggleModalEdit = () => {
         setIsModalEditOpen(!isModalEditOpen);
@@ -18,50 +22,99 @@ const AdminUserPage = () => {
         setIsModalTambahOpen(!isModalTambahOpen);
     }
 
-    return(
+    const fetchUsers = async () => {
+        try {
+            const userData = await getUserAllProfile();
+            setUsers(userData); // Assuming userData is an array of users
+            setError(null); // Clear any previous errors
+        } catch (error) {
+            console.error("Error fetching all user profiles:", error);
+            setError(error.message || "An error occurred while fetching user profiles.");
+        }
+    };
+
+    useEffect(() => {
+        fetchUsers(); // Fetch users on component mount
+    }, []);
+
+    const handleUserSelect = (user) => {
+        setSelectedUser(user); // Set the selected user
+        toggleModalEdit(); // Open the edit modal
+    };
+
+    const handleUserAdded = () => {
+        fetchUsers(); // Refresh the user list after adding a new user
+        toggleModalTambah(); // Close the modal
+    };
+
+    const handleUserUpdated = () => {
+        fetchUsers(); // Refresh the user list after updating a user
+        toggleModalEdit(); // Close the edit modal
+    };
+
+    return (
         <div>
             <TopNavbarAdmin />
-
-            {isModalEditOpen && <EditUserModal toggleModalEdit={toggleModalEdit} />}
-            {isModalTambahOpen && <TambahUserModal toggleModalTambah={toggleModalTambah} />}
-            <div class="container">
-                <div class="card card-adminUser">
-                    <button class="btn btn-success mb-4" data-bs-toggle="modal" data-bs-target="#tambahProfil" style={{width: "10%"}} onClick={toggleModalTambah}><i class="fa-solid fa-user-plus"></i> Tambah</button>
-                    <table class="table table-dark table-striped">
+            <div className="container">
+                <div className="card card-adminUser">
+                    <button className="btn btn-success mb-4" style={{ width: "10%" }} onClick={toggleModalTambah}>
+                        <i className="fa-solid fa-user-plus"></i> Tambah
+                    </button>
+                    {error && <div className="alert alert-danger">{error}</div>} {/* Display error message */}
+                    <table className="table table-dark table-striped">
                         <thead>
                             <tr>
-                                <th scope="col" class="text-center title">ID</th>
-                                <th scope="col" class="text-center title">Foto Profil</th>
-                                <th scope="col" class="text-center title">Nama Pengguna</th>
-                                <th scope="col" class="text-center title">Email</th>
-                                <th scope="col" class="text-center title">Password</th>
-                                <th scope="col" class="text-center title">Aksi</th>
+                                <th scope="col" className="text-center title">ID</th>
+                                <th scope="col" className="text-center title">Foto Profil</th>
+                                <th scope="col" className="text-center title">Nama Pengguna</th>
+                                <th scope="col" className="text-center title">Email</th>
+                                <th scope="col" className="text-center title">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <th scope="row" class="text-center body">1</th>
-                                <td class="text-center"><img src="https://static.vecteezy.com/system/resources/previews/002/275/847/original/male-avatar-profile-icon-of-smiling-caucasian-man-vector.jpg" class="img-fluid" style={{width: "50px", height: "50px", borderRadius: "50%"}}/></td>
-                                <td class="text-center body">Suparman</td>
-                                <td class="text-center body">suparmangaming1234@gmail.com</td>
-                                <td class="text-center body">1234567890</td>
-                                <td class="text-center body"><button class="btn" data-bs-toggle="modal" data-bs-target="#editProfil"><i class="fa fa-pencil-alt" style={{color:"white"}} onClick={toggleModalEdit}></i></button></td>
-                            </tr>
-                            <tr>
-                                <th scope="row" class="text-center body">2</th>
-                                <td class="text-center"><img src="https://static.vecteezy.com/system/resources/previews/002/275/847/original/male-avatar-profile-icon-of-smiling-caucasian-man-vector.jpg" class="img-fluid" style={{width: "50px", height: "50px", borderRadius: "50%"}}/></td>
-                                <td class="text-center body">Sipardi</td>
-                                <td class="text-center body">sipardi0123@gmail.com</td>
-                                <td class="text-center body">0987654321</td>
-                                <td class="text-center body"><a><i class="fa fa-pencil-alt" style={{color:"white"}}></i></a></td> 
-                            </tr>        
+                            {Array.isArray(users) && users.map((user, index) => (
+                                <tr key={user.id}>
+                                    <th scope="row" className="text-center body">{index + 1}</th>
+                                    <td className="text-center">
+                                        <img 
+                                            src={`http://127.0.0.1:8000/storage/profile-picture/${user.profilePicture}`} 
+                                            className="img-fluid" 
+                                            style={{ width: "50px", height: "50px", borderRadius: "50%" }} 
+                                            alt="Profile" 
+                                        />
+                                    </td>
+                                    <td className="text-center body">{user.name}</td>
+                                    <td className="text-center body">{user.email}</td>
+                                    <td className="text-center body">
+                                        <button className="btn" onClick={() => handleUserSelect(user)}>
+                                            <i className="fa fa-pencil-alt" style={{ color: "white" }}></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
                         </tbody>
                     </table>
                 </div>
             </div>
+
+            {/* Edit User Modal */}
+            {isModalEditOpen && (
+                <EditUserModal 
+                    isOpen={isModalEditOpen} 
+                    onClose={handleUserUpdated} // Call this to refresh the user list after update
+                    user={selectedUser} // Pass the selected user to the modal
+                />
+            )}
+
+            {/* Add User Modal */}
+            {isModalTambahOpen && (
+                <TambahUserModal 
+                    isOpen={isModalTambahOpen} 
+                    onClose={handleUserAdded} // Pass the callback to refresh user list
+                />
+            )}
         </div>
     );
 };
-
 
 export default AdminUserPage;
