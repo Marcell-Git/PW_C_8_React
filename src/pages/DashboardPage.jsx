@@ -10,68 +10,12 @@ import TopNavBar from '../components/TopNavbar';
 
 import imgLogo from '../assets/images/logo.png';
 
-import poster1 from '../assets/images/poster1.webp';
-import poster2 from '../assets/images/poster2.webp';
-import poster3 from '../assets/images/poster5.jpg';
-import poster4 from '../assets/images/poster4.jpg';
-
-import poster5 from '../assets/images/poster8.jpg';
-import poster6 from '../assets/images/poster6.jpg';
-import poster7 from '../assets/images/poster3.webp';
-import poster8 from '../assets/images/poster7.jpg';
-
 import promo1 from '../assets/images/event1.png';
 import promo2 from '../assets/images/event2.png';
 import promo3 from '../assets/images/event3.png';
 
 import DetailFilmModal from '../components/Modals/DetailFilmModal';
 import { use } from 'react';
-
-const sedangTayang = [
-    {
-        img: poster1,
-        title: "Home Sweet Loan",
-        rating: "SU"
-    },
-    {
-        img: poster2,
-        title: "Kuasa Gelap",
-        rating: "D17+"
-    },
-    {
-        img: poster3,
-        title: "Joker: Folie A Deux",
-        rating: "R17+"
-    },
-    {
-        img: poster4,
-        title: "Architecture Of Love",
-        rating: "R13+"
-    }
-]
-
-const Mendatang = [
-    {
-        img: poster5,
-        title: "Putri Bintang Lima",
-        rating: "13+"
-    },
-    {
-        img: poster6,
-        title: "Aku Jati Aku Asperger",
-        rating: "SU"
-    },
-    {
-        img: poster7,
-        title: "Bolehkan Sekali Saja Kumenangis",
-        rating: "D17+"
-    },
-    {
-        img: poster8,
-        title: "VenomL The Last Dance",
-        rating: "R17+"
-    }
-]
 
 const promo = [
     promo1, promo2, promo3
