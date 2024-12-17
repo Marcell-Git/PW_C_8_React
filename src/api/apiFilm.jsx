@@ -38,9 +38,8 @@ export const createFilm = async (filmData) => {
     }
 };
 
-
 // New function to update an existing film
-export const updateFilm = async (updateData) => {
+export const updateFilm = async (id, updateData) => {
     const token = sessionStorage.getItem("token");
     console.log("Token:", token);
 
@@ -49,9 +48,9 @@ export const updateFilm = async (updateData) => {
     }
 
     try {
-        const response = await useAxios.put('http://127.0.0.1:8000/api/film/update-all', updateData, {
+        const response = await useAxios.put(`/film/${id}`, updateData, {
             headers: {
-                "Content-Type": "application/json", // Adjust if necessary
+                "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
             },
         });
@@ -61,7 +60,6 @@ export const updateFilm = async (updateData) => {
         throw error.response ? error.response.data : error;
     }
 };
-
 
 // New function to delete a film by ID
 export const deleteFilm = async (id) => {

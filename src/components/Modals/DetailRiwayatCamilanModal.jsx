@@ -3,7 +3,7 @@ import barcodeTiket from '../../assets/images/tiket barcode.gif';
 import { getGambarSnack } from '../../api';
 
 const DetailRiwayatCamilanModal = ({ isOpen, toggleModal, data }) => {
-    if (!isOpen) return null; // Jangan tampilkan modal jika tidak terbuka
+    if (!isOpen) return null; 
 
     return (
         <div 
@@ -33,7 +33,7 @@ const DetailRiwayatCamilanModal = ({ isOpen, toggleModal, data }) => {
                     maxWidth: '500px',
                     padding: '20px',
                 }} 
-                onClick={(e) => e.stopPropagation()} // Hentikan propagasi klik pada modal
+                onClick={(e) => e.stopPropagation()} 
             >
                 <div className="modal-body">
                     <div className="d-flex align-items-center justify-content-center">

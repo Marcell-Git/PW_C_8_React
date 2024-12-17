@@ -4,7 +4,7 @@ import tiketBarcode from '../../assets/images/tiket barcode.gif';
 import { getPoster } from '../../api';
 
 const DetailRiwayatTiketModal = ({ film, isVisible, onClose }) => {
-  if (!isVisible || !film) return null; // Jangan tampilkan modal jika tidak ada data
+    if (!isVisible || !film) return null;
 
     return (
         <div

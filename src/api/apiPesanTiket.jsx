@@ -1,21 +1,18 @@
-import useAxios from '.'; // Adjust the path as necessary
+import useAxios from '.';
 
-// Function to book a ticket
-
-export const pesanTiket = async ()=> {
+export const pesanTiket = async (bookingData) => {
     const token = sessionStorage.getItem("token");
-
+    
     try {
-        const response = await useAxios.post("/tiket", {
+        const response = await useAxios.post('/tiket', bookingData, {
             headers: {
-                "Content-Type": "application/json",
+                "Content-Type": "application/json", 
                 Authorization: `Bearer ${token}`,
             },
         });
-        return response.data.data;
+        return response.data; 
     } catch (error) {
-        console.error("Error fetching studio:", error);
-        throw error.response ? error.response.data : error;
+        throw error.response.data; 
     }
 };
 
@@ -32,4 +29,4 @@ export const getNewestTiket = async () => {
     } catch (error) {
         throw error.response.data;
     }
-};
+}
