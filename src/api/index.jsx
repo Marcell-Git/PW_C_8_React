@@ -13,6 +13,8 @@ export const getPoster = (poster) => {
     return `${BASE_URL}/storage/Film-Poster/${poster}`;
 }
 
-
+export const getGambarSnack = (gambar) => {
+    return `${BASE_URL}/storage/Snack-picture/${gambar}`;
+}
 
 export default useAxios;
