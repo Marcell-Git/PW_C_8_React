@@ -1,6 +1,7 @@
 import './css/Tiket.css';
 import { useState } from 'react';
 import TopNavBar from '../components/TopNavbar';
+import { pesanTiket } from '../api/apiPesanTiket';
 
 import reguler from '../assets/images/download.jpeg';
 import dolby from '../assets/images/download (1).jpeg';
@@ -63,128 +64,144 @@ const PesanTiketPage = () => {
         setSelectedSeat(e.target.value);
     };
 
-    const handleBooking = () => {
-        alert(`Anda berhasil memesan tiket dengan detail berikut:
-        Tanggal: ${selectedDate}
-        Jam: ${selectedTime}
-        Film: ${selectedFilm?.title}
-        Studio: ${selectedStudio?.name}
-        Tempat Duduk: ${selectedSeat}`);
+    const handleBooking = async () => {
+        // Prepare the data to send to the API
+        const bookingData = {
+            id_studio: selectedStudio?.id,
+            id_film: selectedFilm?.id,
+            tanggal: selectedDate,
+            waktu: selectedTime,
+            tempat_duduk: selectedSeat,
+            harga: 100000 // Example price, adjust as needed
+        };
+
+        try {
+            const response = await pesanTiket(bookingData); // Call the API function
+            alert(`Anda berhasil memesan tiket dengan detail berikut:
+            Tanggal: ${selectedDate}
+            Jam: ${selectedTime}
+            Film: ${selectedFilm?.title}
+            Studio: ${selectedStudio?.name}
+            Tempat Duduk: ${selectedSeat}`);
+        } catch (error) {
+            console.error("Error booking ticket:", error);
+            alert("Terjadi kesalahan saat memesan tiket. Silakan coba lagi.");
+        }
     };
 
     return (
         <div className="body-tiket">
-            <TopNavBar  />
-            <div class="container-tiket pb-5">
+            <TopNavBar />
+            <div className="container-tiket pb-5">
                 <h2>Pesan Tiket</h2>
                 <form>
                     <div className="btn-group">
                         <label htmlFor="tanggal">Pilih Tanggal:</label>
                         <input
-                        type="date"
-                        id="tanggal"
-                        className="form-control"
-                        value={selectedDate}
-                        onChange={(e) => setSelectedDate(e.target.value)}
-                        />
-                    </div>
-            
-                    <div className="form-group">
-                        <div className="btn-group">
-                        <button
-                            className="btn btn-dropdown dropdown-toggle"
-                            type="button"
-                            id="timeDropdown"
-                            data-bs-toggle="dropdown"
-                            aria-expanded="false"
-                        >
-                            {selectedTime || "Pilih Jam"}
-                        </button>
-                        <ul className="dropdown-menu dropdown-menu-end">
-                            {times.map((time) => (
-                            <li
-                                key={time}
-                                className="dropdown-item"
-                                onClick={() => setSelectedTime(time)}
-                            >
-                                <p style={{ fontSize: "12px" }}>{time}</p>
-                            </li>
-                            ))}
-                        </ul>
-                        </div>
-                    </div>
-            
-                    <div className="form-group">
-                        <div className="btn-group">
-                        <button
-                            className="btn btn-dropdown dropdown-toggle"
-                            type="button"
-                            id="filmDropdown"
-                            data-bs-toggle="dropdown"
-                            aria-expanded="false"
-                        >
-                            {selectedFilm?.title || "Pilih Film"}
-                        </button>
-                        <ul className="dropdown-menu dropdown-menu-end">
-                            {films.map((film) => (
-                            <li
-                                key={film.id}
-                                className="dropdown-item"
-                                onClick={() => setSelectedFilm(film)}
-                            >
-                                <img className='img-tiket' src={film.poster} alt={film.title} style={{width: "20%"}} />
-                                <div style={{ display: "flex", flexDirection: "column" }}>
-                                <span>{film.title}</span>
-                                <p style={{ fontSize: "12px" }}>{film.description}</p>
-                                </div>
-                            </li>
-                            ))}
-                        </ul>
-                        </div>
-                    </div>
-            
-                    <div className="form-group">
-                        <div className="btn-group">
-                        <button
-                            className="btn btn-dropdown dropdown-toggle"
-                            type="button"
-                            id="studioDropdown"
-                            data-bs-toggle="dropdown"
-                            aria-expanded="false"
-                        >
-                            {selectedStudio?.name || "Pilih Studio"}
-                        </button>
-                        <ul className="dropdown-menu dropdown-menu-end">
-                            {studios.map((studio) => (
-                            <li
-                                key={studio.id}
-                                className="dropdown-item"
-                                onClick={() => setSelectedStudio(studio)}
-                            >
-                                <img className='img-tiket' src={studio.image} alt={studio.name} />
-                                <div style={{ display: "flex", flexDirection: "column" }}>
-                                <span>{studio.name}</span>
-                                <p>{studio.description}</p>
-                                </div>
-                            </li>
-                            ))}
-                        </ul>
-                        </div>
-                    </div>
-            
-                    <div className="form-group">
-                        <div className="btn-group">
-                        <label htmlFor="seatDropdown">Pilih Tempat Duduk:</label>
-                        <input
-                            type="text"
-                            id="seatDropdown"
-                            value={selectedSeat}
-                            onChange={handleSeatChange}
+                            type="date"
+                            id="tanggal"
                             className="form-control"
+                            value={selectedDate}
+                            onChange={(e) => setSelectedDate(e.target.value)}
                         />
+                    </div>
+
+                    <div className="form-group">
+                        <div className="btn-group">
+                            <button
+                                className="btn btn-dropdown dropdown-toggle"
+                                type="button"
+                                id="timeDropdown"
+                                data-bs-toggle="dropdown"
+                                aria-expanded="false"
+                            >
+                                {selectedTime || "Pilih Jam"}
+                            </button>
+                            <ul className="dropdown-menu dropdown-menu-end">
+                                {times.map((time) => (
+                                    <li
+                                        key={time}
+                                        className="dropdown-item"
+                                        onClick={() => setSelectedTime(time)}
+                                    >
+                                        <p style={{ fontSize: "12px" }}>{time}</p>
+                                    </li>
+                                ))}
+                            </ul>
                         </div>
                     </div>
-            
+
+                    <div className="form-group">
+                        <div className="btn-group">
+                            <button
+                                className="btn btn-dropdown dropdown-toggle"
+                                type="button"
+                                id="filmDropdown"
+                                data-bs-toggle="dropdown"
+                                aria-expanded="false"
+                            >
+                                {selectedFilm?.title || "Pilih Film"}
+                            </button>
+                            <ul className="dropdown-menu dropdown-menu-end">
+                                {films.map((film) => (
+                                    <li
+                                        key={film.id}
+                                        className="dropdown-item"
+                                        onClick={() => setSelectedFilm(film)}
+                                    >
+                                        <img className='img-tiket' src={film.poster} alt={film.title} style={{ width: "20%" }} />
+                                        <div style={{ display: "flex", flexDirection: "column" }}>
+                                            <span>{film.title}</span>
+                                            <p style={{ fontSize: "12px" }}>{film.description}</p>
+                                        </div>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div className="form-group">
+                        <div className="btn-group">
+                            <button
+                                className="btn btn-dropdown dropdown-toggle"
+                                type="button"
+                                id="studioDropdown"
+                                data-bs-toggle="dropdown"
+                                aria-expanded="false"
+                            >
+                                {selectedStudio?.name || "Pilih Studio"}
+                            </button>
+                            <ul className="dropdown-menu dropdown-menu-end">
+                                {studios.map((studio) => (
+                                    <li
+                                        key={studio.id}
+                                        className="dropdown-item"
+                                        onClick={() => setSelectedStudio(studio)}
+                                    >
+                                        <img className='img-tiket' src={studio.image} alt={studio.name} />
+                                        <div style={{ display: "flex", flexDirection: "column" }}>
+                                            <span>{studio.name}</span>
+                                            <p>{studio.description}</p>
+                                        </div>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div className="form-group">
+                        <div className="btn-group">
+                            <label htmlFor="seatDropdown">Pilih Tempat Duduk:</label>
+                            <input
+                                type="text"
+                                id="seatDropdown"
+                                value={selectedSeat}
+                                onChange={handleSeatChange}
+                                className="form-control"
+                            />
+                        </div>
+                    </div>
+
                     <button
                         type="button"
                         className="btn-pesan"
