@@ -3,14 +3,14 @@ import TopNavbarAdmin from '../components/TopNavbarAdmin';
 import React, { useState, useEffect } from "react";
 import TambahFilmModal from '../components/Modals/TambahFilmModal';
 import EditFilmModal from '../components/Modals/EditFilmModal';
-import LogOutModal from '../components/Modals/LogOutModal'; // Import LogOutModal
-import { getFilm, createFilm, updateFilm } from '../api/apiFilm'; // Import API functions
+import { getFilm, createFilm, updateFilm } from '../api/apiFilm'; // Import the updateFilm function
 import { toast } from 'react-toastify'; // Import toast for notifications
+
+import { getPoster } from '../api';
 
 const AdminFilmPage = () => {
     const [isModalTambahFilmOpen, setIsModalTambahFilmOpen] = useState(false);
     const [isModalEditFilmOpen, setIsModalEditFilmOpen] = useState(false);
-    const [isModalLogOutOpen, setIsModalLogOutOpen] = useState(false); // State for logout modal
     const [films, setFilms] = useState([]); // State to hold film data
     const [selectedFilm, setSelectedFilm] = useState(null); // State to hold the selected film for editing
     const [error, setError] = useState(null); // State to hold error messages
@@ -21,10 +21,6 @@ const AdminFilmPage = () => {
 
     const toggleModalEditFilm = () => {
         setIsModalEditFilmOpen(!isModalEditFilmOpen);
-    }
-
-    const toggleModalLogOut = () => {
-        setIsModalLogOutOpen(!isModalLogOutOpen);
     }
 
     useEffect(() => {
@@ -61,29 +57,24 @@ const AdminFilmPage = () => {
 
     const handleEditFilm = async (filmData) => {
         try {
-            await updateFilm({ ...filmData, id_film: selectedFilm.id_film }); // Call the updateFilm function with the film ID
-            const updatedFilms = await getFilm(); // Refresh the film list
-            setFilms(updatedFilms); // Update the films state
-            toast.success("Film berhasil diperbarui!"); // Show success message
-            toggleModalEditFilm(); // Close the edit film modal
-            setSelectedFilm(null); // Reset selected film to avoid stale data
+            await updateFilm(selectedFilm.id_film, filmData); // Panggil fungsi updateFilm dengan ID film
+            const updatedFilms = await getFilm(); // Refresh daftar film
+            setFilms(updatedFilms); // Perbarui state films
+            toast.success("Film berhasil diperbarui!"); // Tampilkan pesan sukses
+            toggleModalEditFilm(); // Tutup modal edit film
         } catch (error) {
             console.error("Error updating film:", error);
-            toast.error("Gagal memperbarui film. Coba lagi!"); // Show error message
+            toast.error("Gagal memperbarui film. Coba lagi!"); // Tampilkan pesan kesalahan
         }
     };
-
-    const handleLogout = () => {
-        localStorage.removeItem('authToken'); // Clear authentication token
-        window.location.href = '/'; // Redirect to login page
-    };
+    
 
     return (
         <div>
             <TopNavbarAdmin />
+
             {isModalTambahFilmOpen && <TambahFilmModal toggleModalTambahFilm={toggleModalTambahFilm} onAddFilm={handleAddFilm} />}
             {isModalEditFilmOpen && <EditFilmModal toggleModalEditFilm={toggleModalEditFilm} film={selectedFilm} onEditFilm={handleEditFilm} />}
-            {isModalLogOutOpen && <LogOutModal toggleModalLogOut={toggleModalLogOut} onConfirmLogout={handleLogout} />}
             <div className="container">
                 <div className="card card-adminFilm">
                     <button className="btn btn-success mb-4" style={{ width: "10%" }} onClick={toggleModalTambahFilm}>
@@ -108,7 +99,7 @@ const AdminFilmPage = () => {
                             {Array.isArray(films) && films.map((film, index) => (
                                 <tr key={film.id_film}>
                                     <th scope="row" className="text-center body">{index + 1}</th>
-                                    <td><img src={`http://127.0.0.1:8000/storage/poster/${film.poster}`} className="img-fluid" alt="Poster" /></td>
+                                    <td><img src={getPoster(film.poster)} className="img-fluid" alt="Poster" /></td>
                                     <td className="text-center body">{film.judul}</td>
                                     <td className="text-center body">{film.tanggal_tayang}</td>
                                     <td className="text-center body sinopsis">{film.sinopsis}</td>

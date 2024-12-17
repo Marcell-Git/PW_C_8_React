@@ -6,6 +6,7 @@ import EditUserModal from '../components/Modals/EditUserModal';
 import TambahUserModal from '../components/Modals/TambahUserModal';
 
 import TopNavbarAdmin from '../components/TopNavbarAdmin';
+import { getGambarUser } from '../api';
 
 const AdminUserPage = () => {
     const [isModalEditOpen, setIsModalEditOpen] = useState(false);
@@ -13,6 +14,7 @@ const AdminUserPage = () => {
     const [users, setUsers] = useState([]);
     const [selectedUser, setSelectedUser] = useState(null); // State to hold the selected user for editing
     const [error, setError] = useState(null); // State to hold error messages
+
 
     const toggleModalEdit = () => {
         setIsModalEditOpen(!isModalEditOpen);
@@ -77,7 +79,10 @@ const AdminUserPage = () => {
                                     <th scope="row" className="text-center body">{index + 1}</th>
                                     <td className="text-center">
                                         <img 
-                                            src={`http://127.0.0.1:8000/storage/profile-picture/${user.profilePicture}`} 
+                                            src={user && user.profile_picture 
+                                                ? getGambarUser(user.profile_picture) 
+                                                : "https://static.vecteezy.com/system/resources/previews/002/275/847/original/male-avatar-profile-icon-of-smiling-caucasian-man-vector.jpg"
+                                            } 
                                             className="img-fluid" 
                                             style={{ width: "50px", height: "50px", borderRadius: "50%" }} 
                                             alt="Profile" 

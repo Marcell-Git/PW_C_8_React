@@ -9,9 +9,9 @@ import { getPembayaranCamilanByUser } from "../api/apiPembayaranCamilan";
 import LogOutModal from "../components/Modals/LogOutModal";
 import DetailRiwayatTiketModal from "../components/Modals/DetailRiwayatTiketModal";
 import DetailRiwayatCamilanModal from "../components/Modals/DetailRiwayatCamilanModal";
-import poster1 from '../assets/images/poster1.webp';
 import CamilanCard from "../components/CamilanCard";
 import FilmCard from "../components/FilmCard";
+import { getGambarUser } from "../api";
 
 const ProfilPage = () => {
     const navigate = useNavigate(); // Initialize useNavigate
@@ -146,7 +146,10 @@ const ProfilPage = () => {
                         <div className="row pt-3">
                             <div className="col-12 d-flex align-items-center justify-content-center">
                                 <img 
-                                    src={userData ? getProfilePictureProfil(userData.profile_picture) : "default-avatar-url"} 
+                                    src={userData && userData.profile_picture 
+                                        ? getGambarUser(userData.profile_picture) 
+                                        : "https://static.vecteezy.com/system/resources/previews/002/275/847/original/male-avatar-profile-icon-of-smiling-caucasian-man-vector.jpg"
+                                    }
                                     className="img-fluid" 
                                     style={{ width: "250px", height: "250px", borderRadius: "50%" }} 
                                     alt="Profile"
