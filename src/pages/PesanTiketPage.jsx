@@ -4,41 +4,45 @@ import TopNavBar from '../components/TopNavbar';
 import { getFilm } from '../api/apiFilm';
 import { getStudio } from '../api/apiStudio';
 import { pesanTiket } from '../api/apiPesanTiket';
+import { getFilm } from '../api/apiFilm';
+import { getPoster } from '../api/index';
+import { getStudio } from '../api/apiStudio';
+import { getGambarStudio } from '../api/index';
+import { useNavigate } from 'react-router-dom';  
+
+import PembayaranFilmModal from './PembayaranFilmPage';
+
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 
 const PesanTiketPage = () => {
+    const navigate = useNavigate();
     const [selectedDate, setSelectedDate] = useState("");
     const [selectedTime, setSelectedTime] = useState("");
     const [selectedFilm, setSelectedFilm] = useState(null);
     const [selectedStudio, setSelectedStudio] = useState(null);
     const [selectedSeat, setSelectedSeat] = useState("");
-    const [error, setError] = useState(null);
-    const [success, setSuccess] = useState(null);
+    const [film, setFilm] = useState([]);
+    const [studio, setStudio] = useState([]);
 
-    const [studios, setStudios] = useState([]);
-    const [films, setFilms] = useState([]); // Perbaiki nama state menjadi films
-
-    const times = ["13.45", "16.30", "18.00", "20.30"];
 
     useEffect(() => {
         const fetchFilm = async () => {
             try {
                 const data = await getFilm();
-                console.log(data);
-                setFilms(data); // Mengatur state films
+                setFilm(data);
             } catch (error) {
                 console.error("Error fetching film:", error);
             }
         };
 
         fetchFilm();
-    }, []);
 
-    useEffect(() => {
         const fetchStudio = async () => {
             try {
                 const data = await getStudio();
-                console.log(data);
-                setStudios(data); // Mengatur state studios
+                setStudio(data);
             } catch (error) {
                 console.error("Error fetching studio:", error);
             }
@@ -47,36 +51,32 @@ const PesanTiketPage = () => {
         fetchStudio();
     }, []);
 
+    const times = ["13.45", "16.30", "18.00", "20.30"];
+
     const handleSeatChange = (e) => {
         setSelectedSeat(e.target.value);
     };
 
-    const handleFilmSelect = (film) => {
-        setSelectedFilm(film);
-    };
-
-    const handleStudioSelect = (studio) => {
-        setSelectedStudio(studio);
-    };
-
     const handleBooking = async () => {
-        setError(null);
-        setSuccess(null);
+        // Prepare the data to send to the API
+        const bookingData = {
+            id_studio: selectedStudio?.id_studio,
+            id_film: selectedFilm?.id_film,
+            tanggal: selectedDate,
+            waktu: selectedTime,
+            tempat_duduk: selectedSeat,
+            harga: 50000 // Example price, adjust as needed
+        };
+      
         try {
-            const token = sessionStorage.getItem("token");
-            if (!token) {
-                throw new Error("No token found");
-            }
-
-            const response = await pesanTiket({
-                date: selectedDate,
-                time: selectedTime,
-                film: selectedFilm?.title,
-                studio: selectedStudio?.name,
-                seat: selectedSeat,
-            }, token);
-
-            setSuccess("Anda berhasil memesan tiket!");
+            const response = await pesanTiket(bookingData);
+            console.log("Order snack successful:", response);
+                toast.success("Lanjut Ke pembayaran!", {
+                    autoClose: 1000, 
+                    onClose: () => {
+                        navigate("/pembayaran-tiket"); 
+                    }
+                });
         } catch (error) {
             setError("Gagal memesan tiket. Silakan coba lagi.");
         }
@@ -133,19 +133,19 @@ const PesanTiketPage = () => {
                                 data-bs-toggle="dropdown"
                                 aria-expanded="false"
                             >
-                                {selectedFilm?.title || "Pilih Film"}
+                                {selectedFilm?.judul || "Pilih Film"}
                             </button>
                             <ul className="dropdown-menu dropdown-menu-end">
-                                {films.map((film) => (
+                                {film?.filter((film) => film.status === "Sedang Tayang").map((film) => (
                                     <li
-                                        key={film.id}
+                                        key={film.id_film}
                                         className="dropdown-item"
                                         onClick={() => handleFilmSelect(film)}
                                     >
-                                        <img className='img-tiket' src={film.poster} alt={film.title} style={{ width: "20%" }} />
+                                        <img className='img-tiket' src={getPoster(film.poster)} alt={film.judul} style={{ width: "20%" }} />
                                         <div style={{ display: "flex", flexDirection: "column" }}>
-                                            <span>{film.title}</span>
-                                            <p style={{ fontSize: "12px" }}>{film.description}</p>
+                                            <span>{film.judul}</span>
+                                            <p style={{ fontSize: "12px" }}>{film.rating}</p>
                                         </div>
                                     </li>
                                 ))}
@@ -161,19 +161,19 @@ const PesanTiketPage = () => {
                                 data-bs-toggle="dropdown"
                                 aria-expanded="false"
                             >
-                                {selectedStudio?.name || "Pilih Studio"}
+                                {selectedStudio?.nama_studio || "Pilih Studio"}
                             </button>
                             <ul className="dropdown-menu dropdown-menu-end">
-                                {studios.map((studio) => (
+                                {studio.map((studio) => (
                                     <li
-                                        key={studio.id}
+                                        key={studio.id_studio}
                                         className="dropdown-item"
                                         onClick={() => handleStudioSelect(studio)}
                                     >
-                                        <img className='img-tiket' src={studio.image} alt={studio.name} />
+                                        <img className='img-tiket' src={getGambarStudio(studio.gambar_studio)} alt={studio.nama_studio} />
                                         <div style={{ display: "flex", flexDirection: "column" }}>
-                                            <span>{studio.name}</span>
-                                            <p>{studio.description}</p>
+                                            <span>{studio.nama_studio}</span>
+                                            <p>{studio.deskripsi_studio}</p>
                                         </div>
                                     </li>
                                 ))}

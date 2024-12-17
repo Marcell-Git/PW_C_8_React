@@ -10,8 +10,7 @@ import PesanCamilanPage from "../pages/PesanCamilanPage";
 import ProfilPage from "../pages/ProfilPage";
 import AdminFilmPage from "../pages/AdminFilmPage";
 import OrderCamilanPage from "../pages/OrderCamilanPage";
-
-
+import PembayaranFilm from "../pages/PembayaranFilmPage";
 
 const router = createBrowserRouter([
     {
@@ -33,6 +32,10 @@ const router = createBrowserRouter([
     {
         path: "/pesan-tiket",
         element: <PesanTiketPage />,
+    },
+    {
+        path: "/pembayaran-tiket",
+        element: <PembayaranFilm />,
     },
     {
         path: "/camilan",
