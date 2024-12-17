@@ -2,7 +2,6 @@ import useAxios from ".";
 
 export const getStudio = async ()=> {
     const token = sessionStorage.getItem("token");
-    console.log("Token:", token);
 
     if (!token) {
         throw new Error("No token found");
@@ -11,7 +10,6 @@ export const getStudio = async ()=> {
     try {
         const response = await useAxios.get("/studio", {
             headers: {
-                "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
             },
         });
