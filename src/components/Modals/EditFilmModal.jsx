@@ -105,7 +105,7 @@ const EditFilmModal = ({ toggleModalEditFilm, film, onEditFilm }) => {
                             </div>
                             <div className="mb-3">
                                 <label className="form-label" style={{ color: "white" }}>Rating</label>
-                                <input type="number" className="form-control" name="rating" value={formData.rating} onChange={handleChange} required />
+                                <input type="text" className="form-control" name="rating" value={formData.rating} onChange={handleChange} required />
                             </div>
                             <div className="mb-3">
                                 <label className="form-label" style={{ color: "white" }}>Pemeran</label>

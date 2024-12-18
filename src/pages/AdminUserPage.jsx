@@ -57,7 +57,7 @@ const AdminUserPage = () => {
     return (
         <div>
             <TopNavbarAdmin />
-            <div className="container">
+            <div className="container" style={{ paddingTop: "80px", paddingBottom: "40px" }}>
                 <div className="card card-adminUser">
                     <button className="btn btn-success mb-4" style={{ width: "10%" }} onClick={toggleModalTambah}>
                         <i className="fa-solid fa-user-plus"></i> Tambah
