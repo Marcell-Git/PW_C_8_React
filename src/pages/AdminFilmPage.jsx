@@ -75,7 +75,7 @@ const AdminFilmPage = () => {
 
             {isModalTambahFilmOpen && <TambahFilmModal toggleModalTambahFilm={toggleModalTambahFilm} onAddFilm={handleAddFilm} />}
             {isModalEditFilmOpen && <EditFilmModal toggleModalEditFilm={toggleModalEditFilm} film={selectedFilm} onEditFilm={handleEditFilm} />}
-            <div className="container">
+            <div className="container" style={{ paddingTop: "80px", paddingBottom: "40px" }}>
                 <div className="card card-adminFilm">
                     <button className="btn btn-success mb-4" style={{ width: "10%" }} onClick={toggleModalTambahFilm}>
                         <i className="fa-regular fa-square-plus"></i> Tambah
