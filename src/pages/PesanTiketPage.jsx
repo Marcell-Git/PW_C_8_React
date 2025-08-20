@@ -1,8 +1,6 @@
 import './css/Tiket.css';
 import { useState, useEffect } from 'react';
 import TopNavBar from '../components/TopNavbar';
-import { getFilm } from '../api/apiFilm';
-import { getStudio } from '../api/apiStudio';
 import { pesanTiket } from '../api/apiPesanTiket';
 import { getFilm } from '../api/apiFilm';
 import { getPoster } from '../api/index';
@@ -15,7 +13,6 @@ import PembayaranFilmModal from './PembayaranFilmPage';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-
 const PesanTiketPage = () => {
     const navigate = useNavigate();
     const [selectedDate, setSelectedDate] = useState("");
@@ -25,6 +22,8 @@ const PesanTiketPage = () => {
     const [selectedSeat, setSelectedSeat] = useState("");
     const [film, setFilm] = useState([]);
     const [studio, setStudio] = useState([]);
+    const [selectedRow, setSelectedRow] = useState(""); 
+    const [selectedColumn, setSelectedColumn] = useState("");
 
 
     useEffect(() => {
@@ -53,21 +52,38 @@ const PesanTiketPage = () => {
 
     const times = ["13.45", "16.30", "18.00", "20.30"];
 
+    const handleRowChange = (e) => {
+        const row = e.target.value;
+        setSelectedRow(row);
+        updateSeat(row, selectedColumn); 
+    };
+
+    const handleColumnChange = (e) => {
+        const column = e.target.value;
+        setSelectedColumn(column);
+        updateSeat(selectedRow, column);
+    };
+
+    const updateSeat = (row, column) => {
+        if (row && column) {
+            setSelectedSeat(`${row} - ${column}`);
+        }
+    };
+
     const handleSeatChange = (e) => {
         setSelectedSeat(e.target.value);
     };
 
     const handleBooking = async () => {
-        // Prepare the data to send to the API
         const bookingData = {
             id_studio: selectedStudio?.id_studio,
             id_film: selectedFilm?.id_film,
             tanggal: selectedDate,
             waktu: selectedTime,
             tempat_duduk: selectedSeat,
-            harga: 50000 // Example price, adjust as needed
+            harga: 50000 
         };
-      
+
         try {
             const response = await pesanTiket(bookingData);
             console.log("Order snack successful:", response);
@@ -78,17 +94,16 @@ const PesanTiketPage = () => {
                     }
                 });
         } catch (error) {
-            setError("Gagal memesan tiket. Silakan coba lagi.");
+            console.error("Error booking ticket:", error);
+            alert("Terjadi kesalahan saat memesan tiket. Silakan coba lagi.");
         }
     };
 
     return (
         <div className="body-tiket">
             <TopNavBar />
-            <div className="container-tiket pb-5">
+            <div className="container-tiket pb-5" style={{ width: "1000px" }}>
                 <h2>Pesan Tiket</h2>
-                {error && <div className="alert alert-danger">{error}</div>}
-                {success && <div className="alert alert-success">{success}</div>}
                 <form>
                     <div className="btn-group">
                         <label htmlFor="tanggal">Pilih Tanggal:</label>
@@ -100,6 +115,7 @@ const PesanTiketPage = () => {
                             onChange={(e) => setSelectedDate(e.target.value)}
                         />
                     </div>
+
                     <div className="form-group">
                         <div className="btn-group">
                             <button
@@ -124,6 +140,7 @@ const PesanTiketPage = () => {
                             </ul>
                         </div>
                     </div>
+
                     <div className="form-group">
                         <div className="btn-group">
                             <button
@@ -140,7 +157,7 @@ const PesanTiketPage = () => {
                                     <li
                                         key={film.id_film}
                                         className="dropdown-item"
-                                        onClick={() => handleFilmSelect(film)}
+                                        onClick={() => setSelectedFilm(film)}
                                     >
                                         <img className='img-tiket' src={getPoster(film.poster)} alt={film.judul} style={{ width: "20%" }} />
                                         <div style={{ display: "flex", flexDirection: "column" }}>
@@ -152,6 +169,7 @@ const PesanTiketPage = () => {
                             </ul>
                         </div>
                     </div>
+
                     <div className="form-group">
                         <div className="btn-group">
                             <button
@@ -168,7 +186,7 @@ const PesanTiketPage = () => {
                                     <li
                                         key={studio.id_studio}
                                         className="dropdown-item"
-                                        onClick={() => handleStudioSelect(studio)}
+                                        onClick={() => setSelectedStudio(studio)}
                                     >
                                         <img className='img-tiket' src={getGambarStudio(studio.gambar_studio)} alt={studio.nama_studio} />
                                         <div style={{ display: "flex", flexDirection: "column" }}>
@@ -180,18 +198,28 @@ const PesanTiketPage = () => {
                             </ul>
                         </div>
                     </div>
-                    <div className="form-group">
-                        <div className="btn-group">
-                            <label htmlFor="seatDropdown">Pilih Tempat Duduk:</label>
-                            <input
-                                type="text"
-                                id="seatDropdown"
-                                value={selectedSeat}
-                                onChange={handleSeatChange}
-                                className="form-control"
-                            />
+
+                    <div className="row p-4">
+                        <div className="col">
+                        <select class="form-select form-select mb-3" value={selectedRow} onChange={handleRowChange}>
+                            <option selected>Pilih Baris</option>
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                        </select>
+                        </div>
+                        <div className="col">
+                        <select class="form-select form-select mb-3" value={selectedColumn} onChange={handleColumnChange}>
+                            <option selected>Pilih Kolom</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
                         </div>
                     </div>
+
                     <button
                         type="button"
                         className="btn-pesan"

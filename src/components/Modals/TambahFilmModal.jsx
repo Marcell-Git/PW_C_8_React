@@ -88,8 +88,7 @@ const TambahFilmModal = ({ toggleModalTambahFilm, onAddFilm }) => {
                                 <label className="form-label" style={{ color: "white" }}>Status</label>
                                 <select className="form-select" name="status" value={formData.status} onChange={handleChange} required>
                                     <option value="Sedang Tayang">Sedang Tayang</option>
-                                    <option value="Selesai Tayang">Selesai Tayang</option>
-                                    <option value="Segera Tayang">Segera Tayang</option>
+                                    <option value="Mendatang">Mendatang</option>
                                 </select>
                             </div>
                             <div className="mb-3">

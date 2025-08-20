@@ -68,7 +68,7 @@ const CamilanCard = () => {
                     </div>
                 ))
             ) : (
-                <p>Tidak ada data camilan tersedia.</p>
+                <p></p>
             )}
         </div>
     );

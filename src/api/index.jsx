@@ -21,4 +21,8 @@ export const getGambarStudio = (gambar) => {
     return `${BASE_URL}/storage/gambar-studio/${gambar}`;
 }
 
+export const getGambarUser = (gambar) => {
+    return `${BASE_URL}/storage/profile-pictures/${gambar}`;
+}
+
 export default useAxios;
